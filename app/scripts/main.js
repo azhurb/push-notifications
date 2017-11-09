@@ -21,7 +21,7 @@
 
 'use strict';
 
-const applicationServerPublicKey = 'BKfqQqs3TX5AqHUfobfOHsmaurHlCzKihEIXfN6ScR_AmIYRtZnHedjHCVnl5B9IDuQRDprkAPRkk-oHOWUBWDA';
+const applicationServerPublicKey = 'BIzSw1L6C3UY45n73jJ40vAtrCHgJDtZugQicsW9Iijah4qi15W6xuTHS9FRRibNtvg4WerHUbuC41XqwHgU7yM';
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -63,10 +63,10 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 function initializeUI() {
 
-    pushButton.addEventListener('click', function () {
+    pushButton.addEventListener('click', function() {
         pushButton.disabled = true;
         if (isSubscribed) {
-            // TODO: Unsubscribe user
+            unsubscribeUser();
         } else {
             subscribeUser();
         }
@@ -106,6 +106,26 @@ function subscribeUser() {
         })
         .catch(function (err) {
             console.log('Failed to subscribe the user: ', err);
+            updateBtn();
+        });
+}
+
+function unsubscribeUser() {
+    swRegistration.pushManager.getSubscription()
+        .then(function(subscription) {
+            if (subscription) {
+                return subscription.unsubscribe();
+            }
+        })
+        .catch(function(error) {
+            console.log('Error unsubscribing', error);
+        })
+        .then(function() {
+            updateSubscriptionOnServer(null);
+
+            console.log('User is unsubscribed.');
+            isSubscribed = false;
+
             updateBtn();
         });
 }

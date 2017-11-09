@@ -63,7 +63,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 function initializeUI() {
 
-    pushButton.addEventListener('click', function() {
+    pushButton.addEventListener('click', function () {
         pushButton.disabled = true;
         if (isSubscribed) {
             unsubscribeUser();
@@ -112,15 +112,15 @@ function subscribeUser() {
 
 function unsubscribeUser() {
     swRegistration.pushManager.getSubscription()
-        .then(function(subscription) {
+        .then(function (subscription) {
             if (subscription) {
                 return subscription.unsubscribe();
             }
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log('Error unsubscribing', error);
         })
-        .then(function() {
+        .then(function () {
             updateSubscriptionOnServer(null);
 
             console.log('User is unsubscribed.');
@@ -149,7 +149,6 @@ function updateBtn() {
 }
 
 function updateSubscriptionOnServer(subscription) {
-    // TODO: Send subscription to application server
 
     const subscriptionJson = document.querySelector('.js-subscription-json');
     const subscriptionDetails =
